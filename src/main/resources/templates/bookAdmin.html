@@ -1,0 +1,136 @@
+<!doctype html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{admin-page/admin :: html_header-admin }">
+
+<body>
+<div id="eq-loader">
+    <div class="eq-loader-div">
+        <div class="eq-loading dual-loader mx-auto mb-5"></div>
+    </div>
+</div>
+
+<!--  BEGIN NAVBAR  -->
+<header th:replace="~{admin-page/admin  :: my-header-admin}"></header>
+<!--  END NAVBAR  -->
+<!--  BEGIN PROFILE SIDEBAR  -->
+
+
+<div class="main-container" id="container">
+    <div class="overlay"></div>
+    <div class="ps-overlay"></div>
+    <div class="search-overlay"></div>
+
+    <!--  BEGIN MODERN  -->
+    <div th:replace="~{admin-page/admin  :: modern-admin}"></div>
+    <!--  END MODERN  -->
+
+    <!--  BEGIN CONTENT PART  -->
+    <div id="content" class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <div class="page-title">
+                    <h3>Tất cả sách</h3>
+
+                    <a th:href="@{/admin/book/add}" class="btn btn-info form-control">Thêm sách</a>
+                </div>
+            </div>
+
+            <div class="row margin-bottom-120">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="statbox widget box box-shadow">
+                        <div class="widget-header">
+                            <div class="row">
+                                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                    <h4>Danh sách</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="widget-content widget-content-area">
+                            <div class="table-responsive mb-4">
+                                <table id="ecommerce-product-list" class="table  table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>Ảnh</th>
+                                        <th>Tên</th>
+                                        <th>Tác giả</th>
+                                        <th>Ngày phát hành</th>
+                                        <th>Thể loại</th>
+                                        <th>Số trang</th>
+                                        <th>Số lượng đã bán</th>
+                                        <th class="align-center">Hành động</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="book, state : ${bookList}">
+                                        <td class="text-center"><img class="product-list-img"
+                                                                     th:src="@{'/image/BookCover/'+${book.image}}">
+                                        </td>
+                                        <td th:utext="${book.name}"></td>
+                                        <td th:utext="${book.author}"></td>
+                                        <td th:utext="${book.publishDate}"></td>
+                                        <td th:utext="${book.genre}"></td>
+                                        <td th:utext="${book.numberOfPage}"></td>
+                                        <td th:utext="${book.soldNumber}"></td>
+                                        <td class="align-center">
+                                            <ul class="table-controls">
+                                                <li>
+                                                    <a th:href="@{'/admin/book/edit/' + ${pro.id}}"
+                                                       data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <i class="flaticon-edit"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a th:href="@{'/admin/book/delete/' + ${pro.id}}"
+                                                       data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <i class="flaticon-delete-5"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  END CONTENT PART  -->
+</div>
+<!-- END MAIN CONTAINER -->
+
+<!--  END CONTENT PART  -->
+<!--  END MODERN  -->
+<!--  BEGIN FOOTER  -->
+<footer th:replace="~{admin-page/admin  :: admin-footer}"></footer>
+<!--  END FOOTER  -->
+
+<!--  BEGIN PROFILE SIDEBAR  -->
+<aside th:replace="~{admin-page/admin  :: admin-profile}"></aside>
+</body>
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<th:block th:insert="~{admin-page/admin  :: script}"></th:block>
+<script>
+    $('#ecommerce-product-list').DataTable({
+        "lengthMenu": [5, 10, 20, 50, 100],
+        "language": {
+            "paginate": {
+                "previous": "<i class='flaticon-arrow-left-1'></i>",
+                "next": "<i class='flaticon-arrow-right'></i>"
+            },
+            "info": "Hiện thị _PAGE_ trong _PAGES_"
+        },
+        drawCallback: function (settings) {
+            $('[data-toggle="tooltip"]').tooltip();
+        },
+        "bDestroy": true
+    });
+</script>
+
+<!--  END CUSTOM SCRIPT FILES  -->
+
+</html>
