@@ -18,9 +18,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         String redirectURL = request.getContextPath();
         if (userDetails.hasRole("CUSTOMER")) {
-            redirectURL = "home";
+            redirectURL = "index";
         } else if (userDetails.hasRole("ADMIN")){
-            redirectURL = "admin";
+            redirectURL = "admin/book";
         }
         response.sendRedirect(redirectURL);
 

@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,8 +23,11 @@ public class Book {
     private Long id;
     private String name;
     private String author;
-    private LocalDateTime publishDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate publishDate;
     private String cover;
     private String genre;
     private Long sold;
+    private String description;
+    private String numberOfPage;
 }

@@ -1,7 +1,7 @@
 <!doctype html>
 
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:replace="~{admin-page/admin :: html_header-admin }">
+<head th:replace="~{admin :: html_header-admin }">
 
 <body>
 <div id="eq-loader">
@@ -11,7 +11,7 @@
 </div>
 
 <!--  BEGIN NAVBAR  -->
-<header th:replace="~{admin-page/admin  :: my-header-admin}"></header>
+<header th:replace="~{admin  :: my-header-admin}"></header>
 <!--  END NAVBAR  -->
 <!--  BEGIN PROFILE SIDEBAR  -->
 
@@ -22,7 +22,7 @@
     <div class="search-overlay"></div>
 
     <!--  BEGIN MODERN  -->
-    <div th:replace="~{admin-page/admin  :: modern-admin}"></div>
+    <div th:replace="~{admin  :: modern-admin}"></div>
     <!--  END MODERN  -->
 
     <!--  BEGIN CONTENT PART  -->
@@ -64,24 +64,24 @@
                                     <tbody>
                                     <tr th:each="book, state : ${bookList}">
                                         <td class="text-center"><img class="product-list-img"
-                                                                     th:src="@{'/image/BookCover/'+${book.image}}">
+                                                                     th:src="@{'/image/BookCover/'+${book.cover}}">
                                         </td>
                                         <td th:utext="${book.name}"></td>
                                         <td th:utext="${book.author}"></td>
                                         <td th:utext="${book.publishDate}"></td>
                                         <td th:utext="${book.genre}"></td>
                                         <td th:utext="${book.numberOfPage}"></td>
-                                        <td th:utext="${book.soldNumber}"></td>
+                                        <td th:utext="${book.sold}"></td>
                                         <td class="align-center">
                                             <ul class="table-controls">
                                                 <li>
-                                                    <a th:href="@{'/admin/book/edit/' + ${pro.id}}"
+                                                    <a th:href="@{'/admin/book/edit/' + ${book.id}}"
                                                        data-toggle="tooltip" data-placement="top" title="Edit">
                                                         <i class="flaticon-edit"></i>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a th:href="@{'/admin/book/delete/' + ${pro.id}}"
+                                                    <a th:href="@{'/admin/book/delete/' + ${book.id}}"
                                                        data-toggle="tooltip" data-placement="top" title="Delete">
                                                         <i class="flaticon-delete-5"></i>
                                                     </a>
@@ -106,14 +106,14 @@
 <!--  END CONTENT PART  -->
 <!--  END MODERN  -->
 <!--  BEGIN FOOTER  -->
-<footer th:replace="~{admin-page/admin  :: admin-footer}"></footer>
+<footer th:replace="~{admin  :: admin-footer}"></footer>
 <!--  END FOOTER  -->
 
 <!--  BEGIN PROFILE SIDEBAR  -->
-<aside th:replace="~{admin-page/admin  :: admin-profile}"></aside>
+<aside th:replace="~{admin  :: admin-profile}"></aside>
 </body>
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<th:block th:insert="~{admin-page/admin  :: script}"></th:block>
+<th:block th:insert="~{admin  :: script}"></th:block>
 <script>
     $('#ecommerce-product-list').DataTable({
         "lengthMenu": [5, 10, 20, 50, 100],

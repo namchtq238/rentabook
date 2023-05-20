@@ -33,7 +33,8 @@
                     <div class="statbox widget box box-shadow">
 <!--                        <form th:object="${product}" method="post" enctype="multipart/form-data">-->
 
-                        <form method="post" action="/books" enctype="multipart/form-data">
+                        <form method="post" action="/admin/book" th:object="${book}" enctype="multipart/form-data">
+                            <input type="hidden" th:field="*{id}" />
                             <div class="row">
                                 <h2 class="col-12 text-center mb-4">Book</h2>
                                 <div class="col-md-6">
@@ -41,43 +42,42 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="bookName">Book Name</label>
-                                                <input type="text" class="form-control" id="bookName" name="bookName" required>
+                                                <input type="text" class="form-control" id="bookName" name="bookName" th:field="*{name}" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="author">Author</label>
-                                                <input type="text" class="form-control" id="author" name="author" required>
+                                                <input type="text" class="form-control" id="author" name="author" th:field="*{author}" required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="description">Description</label>
-                                        <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
+                                        <textarea class="form-control" id="description" name="description" rows="5" th:field="*{description}" required></textarea>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="publishDate">Publish Date</label>
-                                                <input type="date" class="form-control" id="publishDate" name="publishDate" required>
+                                                <input type="date" class="form-control" id="publishDate" name="publishDate" th:field="*{publishDate}" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="numberOfPages">Number of Pages</label>
-                                                <input type="number" class="form-control" id="numberOfPages" name="numberOfPages" required>
+                                                <input type="number" class="form-control" id="numberOfPages" name="numberOfPages" th:field="*{numberOfPage}" required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="genre">Genre</label>
-                                        <select class="form-control" id="genre" name="genre" required>
-                                            <option value="">Select Genre</option>
-                                            <option value="Fantasy">Fantasy</option>
-                                            <option value="Science Fiction">Science Fiction</option>
-                                            <option value="Mystery">Mystery</option>
-                                            <option value="Romance">Romance</option>
-                                            <option value="Thriller">Thriller</option>
+                                        <select class="form-control" id="genre" name="genre" th:field="*{genre}" required>
+                                            <option value="" disabled>Select Genre</option>
+                                            <option value="Khoa học viễn tưởng">Khoa học viễn tưởng</option>
+                                            <option value="Thần bí">Thần bí</option>
+                                            <option value="Tình cảm">Tình cảm</option>
+                                            <option value="Rừng rợn">Rừng rợn</option>
                                         </select>
                                     </div>
                                 </div>
@@ -85,7 +85,9 @@
                                     <div class="offset-md-3">
                                         <div class="form-group">
                                             <label for="bookCover">Book Cover</label>
-                                            <input type="file" class="form-control-file" id="bookCover" name="bookCover" accept="image/*" onchange="previewImage(event)">
+                                            <input type="file" class="form-control-file"
+                                                   id="bookCover" name="bookCover" accept="image/png, image/jpeg, image/jpg"
+                                                   onchange="previewImage(event)">
                                         </div>
                                         <div class="form-group">
                                             <img id="preview" src="#" alt="Preview" style="max-height: 200px;">
@@ -94,8 +96,13 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-md-6 offset-5 ml-auto text-end">
+                                    <div th:unless="${type.VIEW == type}">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
                                 <div class="col-md-6 ml-auto text-end">
-                                    <button type="submit" class="btn btn-primary">Create</button>
+                                    <button type="submit" class="btn btn-primary" onclick="history.go(-1)">Back</button>
                                 </div>
                             </div>
                         </form>
