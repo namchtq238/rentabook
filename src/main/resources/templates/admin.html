@@ -169,8 +169,12 @@
 
         <div class="user-links text-left">
             <ul class="list-unstyled">
-                <li>
+                <li sec:authorize="isAuthenticated()">
                     <a th:href="@{/logout}"><i class="flaticon-power-off"></i> Logout</a>
+
+                </li>
+                <li sec:authorize="isAnonymous()">
+                    <a th:href="@{/login}"><i class="flaticon-power-off"></i> Login</a>
                 </li>
             </ul>
         </div>

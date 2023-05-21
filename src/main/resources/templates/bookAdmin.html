@@ -31,8 +31,10 @@
             <div class="page-header">
                 <div class="page-title">
                     <h3>Tất cả sách</h3>
+                    <div sec:authorize="isAuthenticated()">
+                        <a th:href="@{/admin/book/add}" class="btn btn-info form-control">Thêm sách</a>
+                    </div>
 
-                    <a th:href="@{/admin/book/add}" class="btn btn-info form-control">Thêm sách</a>
                 </div>
             </div>
 
@@ -74,20 +76,28 @@
                                         <td th:utext="${book.numberOfPage}"></td>
                                         <td th:utext="${book.sold}"></td>
                                         <td class="align-center">
-                                            <ul class="table-controls">
-                                                <li>
-                                                    <a th:href="@{'/admin/book/edit/' + ${book.id}}"
-                                                       data-toggle="tooltip" data-placement="top" title="Edit">
-                                                        <i class="flaticon-edit"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a th:href="@{'/admin/book/delete/' + ${book.id}}"
-                                                       data-toggle="tooltip" data-placement="top" title="Delete">
-                                                        <i class="flaticon-delete-5"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
+                                            <div sec:authorize="isAuthenticated()">
+                                                <ul class="table-controls">
+                                                    <li>
+                                                        <a th:href="@{'/admin/book/view/' + ${book.id}}"
+                                                           data-toggle="tooltip" data-placement="top" title="Edit">
+                                                            <i class="flaticon-view"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a th:href="@{'/admin/book/edit/' + ${book.id}}"
+                                                           data-toggle="tooltip" data-placement="top" title="Edit">
+                                                            <i class="flaticon-edit"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a th:href="@{'/admin/book/delete/' + ${book.id}}"
+                                                           data-toggle="tooltip" data-placement="top" title="Delete">
+                                                            <i class="flaticon-delete-5"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </td>
                                     </tr>
                                     </tbody>

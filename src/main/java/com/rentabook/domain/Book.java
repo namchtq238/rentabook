@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -27,7 +28,7 @@ public class Book {
     private LocalDate publishDate;
     private String cover;
     private String genre;
-    private Long sold;
+    private Long sold = 0L;
     private String description;
     private String numberOfPage;
 }

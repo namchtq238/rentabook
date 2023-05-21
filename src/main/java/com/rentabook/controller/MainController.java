@@ -1,12 +1,9 @@
 package com.rentabook.controller;
 
 import com.rentabook.domain.User;
+import com.rentabook.service.BookSerivce;
 import com.rentabook.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,15 +16,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class MainController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private BookSerivce bookSerivce;
     @GetMapping("/login")
     public String login(){
         return "login";
     }
     @GetMapping(value = {"/", "/index"})
-    public String index(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) return "redirect:/";
-        return "login";
+    public String index(Model model){
+        if (userService.isUserLogin()) return "redirect:/";
+        return "index";
     }
     @GetMapping("/createAccount")
     public String getViewCreateAccount(Model model) {

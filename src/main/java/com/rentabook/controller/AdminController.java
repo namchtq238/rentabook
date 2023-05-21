@@ -3,6 +3,7 @@ package com.rentabook.controller;
 import com.rentabook.constant.Type;
 import com.rentabook.domain.Book;
 import com.rentabook.service.BookSerivce;
+import com.rentabook.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class AdminController {
 
     @Autowired
     private BookSerivce bookSerivce;
+    @Autowired
+    private UserService userService;
     @GetMapping("/book")
     public String listBook(Model model){
         model.addAttribute("bookList", bookSerivce.getListBook());
@@ -73,7 +76,7 @@ public class AdminController {
         }
         return "redirect:/admin/book";
     }
-    @GetMapping("book//delete/{id}")
+    @GetMapping("book/delete/{id}")
     public String handleDeleteProductAdmin(@PathVariable("id") long productId) {
         bookSerivce.delete(productId);
         return "redirect:/admin/book";
