@@ -63,8 +63,9 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="book, state : ${bookList}">
-                                        <td class="text-center"><img class="product-list-img"
-                                                                     th:src="@{'/image/BookCover/'+${book.cover}}">
+                                        <td class="text-center">
+                                            <img class="product-list-img"
+                                                 th:src="@{'/image/'+${book.cover}}">
                                         </td>
                                         <td th:utext="${book.name}"></td>
                                         <td th:utext="${book.author}"></td>

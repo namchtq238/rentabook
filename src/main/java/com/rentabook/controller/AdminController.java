@@ -4,11 +4,13 @@ import com.rentabook.constant.Type;
 import com.rentabook.domain.Book;
 import com.rentabook.service.BookSerivce;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +23,7 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
+@Slf4j
 public class AdminController {
     private static final String currentDirectory = System.getProperty("user.dir");
     private static final Path path = Paths.get(currentDirectory + Paths.get("/target/classes/static/image"));
@@ -51,17 +54,23 @@ public class AdminController {
         return "add-book";
     }
     @PostMapping("book")
-    public String handleAddBook(@ModelAttribute Book book, @RequestParam MultipartFile bookCover){
+    public String handleAddBook(@ModelAttribute Book book,
+                                @RequestParam MultipartFile bookCover,
+                                RedirectAttributes redirectAttributes){
         if (!bookCover.isEmpty()) {
             try {
                 InputStream inputStream = bookCover.getInputStream();
                 Files.copy(inputStream, path.resolve(Objects.requireNonNull(bookCover.getOriginalFilename())), StandardCopyOption.REPLACE_EXISTING);
                 book.setCover(bookCover.getOriginalFilename());
+                bookSerivce.createBook(book);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error reading file: {}", e.getMessage());
+                redirectAttributes.addFlashAttribute("msg", "Thêm sách thất bại");
             }
         }
-        bookSerivce.createBook(book);
+        else {
+            redirectAttributes.addFlashAttribute("msg", "Thêm sách thất bại");
+        }
         return "redirect:/admin/book";
     }
     @GetMapping("book//delete/{id}")
