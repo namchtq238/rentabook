@@ -3,7 +3,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{admin :: html_header-admin }">
 
-<body>
+<body onload="checkRequestParameter()">
 <div id="eq-loader">
     <div class="eq-loader-div">
         <div class="eq-loading dual-loader mx-auto mb-5"></div>
@@ -100,6 +100,11 @@
                                     <div th:unless="${type.VIEW == type}">
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </div>
+                                    <div th:if="${type.VIEW == type}">
+                                        <a th:href="@{'/admin/book/edit/' + ${book.id}}" >
+                                            <button type="button" class="btn btn-primary">EDIT</button>
+                                        </a>
+                                    </div>
                                 </div>
                                 <div class="col-md-6 ml-auto text-end">
                                     <a th:href="@{'/admin/book'}"  class="btn btn-primary">Back</a>
@@ -132,6 +137,32 @@
         }
         reader.readAsDataURL(event.target.files[0]);
     }
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    const viewType = /*[[${type}]]*/
+    /*]]>*/
+        function checkRequestParameter() {
+        if (viewType !== 'VIEW') {
+            document.getElementById('bookName').disabled = false;
+            document.getElementById('author').disabled = false;
+            document.getElementById('description').disabled = false;
+            document.getElementById('genre').disabled = false;
+            document.getElementById('publishDate').disabled = false;
+            document.getElementById('numberOfPages').disabled = false;
+            document.getElementById('bookCover').disabled = false;
+        } else {
+            document.getElementById('bookName').disabled = true;
+            document.getElementById('author').disabled = true;
+            document.getElementById('description').disabled = true;
+            document.getElementById('genre').disabled = true;
+            document.getElementById('publishDate').disabled = true;
+            document.getElementById('numberOfPages').disabled = true;
+            document.getElementById('bookCover').disabled = true;
+        }
+    }
+
 </script>
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

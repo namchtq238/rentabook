@@ -16,8 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class MainController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private BookSerivce bookSerivce;
+
     @GetMapping("/login")
     public String login(){
         return "login";
@@ -38,7 +37,7 @@ public class MainController {
                                       BindingResult bindingResult,
                                       RedirectAttributes redirectAttributes) throws Exception {
         if (userService.checkExist(user.getUsername()))
-            bindingResult.rejectValue("email", "invalid", "Tài khoản khách hàng đã có trong hệ thống");
+            bindingResult.rejectValue("username", "invalid", "Tài khoản khách hàng đã có trong hệ thống");
         if (bindingResult.hasErrors()) return "/createAccount";
         userService.registerUser(user);
         redirectAttributes.addFlashAttribute("msg", "Tạo tài khoản thành công");
