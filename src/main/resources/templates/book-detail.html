@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{header :: html_header}">
+
+<body>
+<header th:replace="header :: my-header"></header>
+
+<section class="breadcrum">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb container">
+            <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Danh mục sản phẩm</li>
+            <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
+        </ol>
+    </nav>
+</section>
+<main>
+    <section class="shop-details-area pt-100 pb-100">
+        <div class="container">
+            <div class="row" th:object="${book}">
+                <div class="col-lg-6">
+                    <div class="shop-details-thumb">
+                        <div class="shop-details-thumb-slider-active">
+                            <div class="item ">
+                                <img th:src="@{'/image/'+ ${book.cover}}" alt="">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="shop-product-details-content pl-70 mt-35">
+<!--                        <span>Trong kho</span>-->
+                        <h2 class="title" th:utext="*{name}"></h2>
+                        <input type="hidden" id="productId" value="1">
+                        <p>Thể loại: <span th:utext="*{genre}"></span></p>
+                        <h5 th:utext="*{description}"></h5>
+                        <form th:action="@{'/order/' + ${book.id}}" method="post">
+                            <div class="shop-buttons d-block d-sm-flex align-items-center">
+                                <div class="product-quantity number-input" id="quantity">
+                                    <button type="button" id="sub" class="sub">-</button>
+                                    <input type="number" id="1" value="1" th:name="quantity">
+                                    <button type="button" id="add" class="add">+</button>
+                                </div>
+                                <button class="main-btn ml-10" type="button" id="order">Đặt hàng</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có muốn lưu thay đổi?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    // Show the confirmation modal when the "Add Book" button is clicked
+    document.getElementById("order").addEventListener("click", function() {
+        $('#confirmModal').modal('show');
+    });
+
+    // Handle the confirmation action when the "Confirm" button in the modal is clicked
+    document.getElementById("confirm").addEventListener("click", function() {
+        // Submit the form to add the book
+        document.getElementById("order").submit();
+    });
+</script>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<th:block th:insert="~{header :: script}"></th:block>
+</html> 

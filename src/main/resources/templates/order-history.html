@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{header :: html_header}">
+
+<body>
+<header th:replace="header :: my-header"></header>
+
+<section class="breadcrum">
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb container">
+                <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Tài khoản</li>
+                <li class="breadcrumb-item active" aria-current="page">Lịch sử mua hàng</li>
+            </ol>
+        </nav>
+    </section>
+    <div class="container ">
+
+        <h1 class="text-center">LỊCH SỬ MUA HÀNG</h1>
+        <th:block th:if="${#lists.isEmpty(listOrder)}">
+            <div class="col-md-12  mt-50 mb-200">
+                <div class=" personal-infor ">
+                    Bạn chưa đặt bất kì một đơn hàng nào!!!
+                </div>
+            </div>
+        </th:block>
+        <th:block th:unless="${#lists.isEmpty(listOrder)}">
+            <div class="ordered-detail container" th:each="order, state : ${listOrder}">
+                    <div class="col-md-4">
+                        <img th:src="@{'/image/'+${order.book.cover}}" alt="">
+                    </div>
+                    <div class="col-md-8 ">
+                        <div class="product-name">
+                            <p>Tên sản phẩm: <span><a th:href="@{'/book/'+${order.book.id}}" th:utext="${order.book.name}"></a></span></p>
+                        </div>
+                        <div class="product-id">
+                            <p>Mã đơn: <span th:utext="${order.id}"></span></p>
+                        </div>
+<!--                        <div class="product-date">-->
+<!--                            <p>Ngày đặt: <span th:utext="${order.createAt}"></span></p>-->
+<!--                        </div>-->
+                        <div class="product-quantity">
+                            <p>Số lượng: <span th:utext="${order.quantity}"></span></p>
+                        </div>
+                            <div class="shop-buttons d-block d-sm-flex align-items-center">
+                                <button class="main-btn ml-10" type="button">
+                                    <a th:href="@{'/order/cancel/' + ${order.id}}" >
+                                        Hủy đơn
+                                    </a>
+                                </button>
+                            </div>
+                    </div>
+                </div>
+<!--                    <div class="col-sm-12 order-again">-->
+<!--                        <div><p>Tổng tiền: <span th:utext="${format.formatPrice(order.totalPrice)}"><sup>đ</sup></span></p></div>-->
+<!--                        <br>-->
+<!--                        <div>-->
+<!--                            <button type="button" class="btn btn-warning "><a th:href="@{'/user/repurchase/' + ${order.id}}">Mua lại</a></button>-->
+<!--                            <button type="button" class="btn btn-warning "><a href="#">Đánh giá</a></button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+        </th:block>
+        
+    </div>
+
+</body>
+<th:block th:insert="~{header :: script}"></th:block>
+
+</html>

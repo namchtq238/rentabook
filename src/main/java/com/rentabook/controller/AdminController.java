@@ -6,7 +6,6 @@ import com.rentabook.service.BookSerivce;
 import com.rentabook.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,53 +28,60 @@ public class AdminController {
     private static final String currentDirectory = System.getProperty("user.dir");
     private static final Path path = Paths.get(currentDirectory + Paths.get("/target/classes/static/image"));
 
-    @Autowired
-    private BookSerivce bookSerivce;
-    @Autowired
-    private UserService userService;
+    private final BookSerivce bookSerivce;
+    private final UserService userService;
+
     @GetMapping("/book")
-    public String listBook(Model model){
+    public String listBook(Model model) {
         model.addAttribute("bookList", bookSerivce.getListBook());
-        return "bookAdmin";
+        return "book-admin";
     }
+
     @GetMapping("/book/add")
-    public String addBook(Model model){
+    public String addBook(Model model) {
         model.addAttribute("book", new Book());
         model.addAttribute("type", Type.ADD);
         return "add-book";
     }
+
     @GetMapping("/book/edit/{id}")
-    public String editBook(Model model,@PathVariable Long id){
+    public String editBook(Model model, @PathVariable Long id) {
         model.addAttribute("book", bookSerivce.getBook(id));
         model.addAttribute("type", Type.EDIT);
         return "add-book";
     }
+
     @GetMapping("/book/view/{id}")
-    public String viewBook(Model model,@PathVariable Long id){
+    public String viewBook(Model model, @PathVariable Long id) {
         model.addAttribute("book", bookSerivce.getBook(id));
         model.addAttribute("type", Type.VIEW);
         return "add-book";
     }
+
     @PostMapping("book")
     public String handleAddBook(@ModelAttribute Book book,
                                 @RequestParam MultipartFile bookCover,
-                                RedirectAttributes redirectAttributes){
+                                RedirectAttributes redirectAttributes) {
         if (!bookCover.isEmpty()) {
             try {
-                InputStream inputStream = bookCover.getInputStream();
-                Files.copy(inputStream, path.resolve(Objects.requireNonNull(bookCover.getOriginalFilename())), StandardCopyOption.REPLACE_EXISTING);
-                book.setCover(bookCover.getOriginalFilename());
-                bookSerivce.createBook(book);
+                if (bookSerivce.checkExistedBook(book)) {
+                    redirectAttributes.addFlashAttribute("msg", "Đã tồn tại sách");
+                } else {
+                    InputStream inputStream = bookCover.getInputStream();
+                    Files.copy(inputStream, path.resolve(Objects.requireNonNull(bookCover.getOriginalFilename())), StandardCopyOption.REPLACE_EXISTING);
+                    book.setCover(bookCover.getOriginalFilename());
+                    bookSerivce.createBook(book);
+                }
             } catch (IOException e) {
                 log.error("Error reading file: {}", e.getMessage());
                 redirectAttributes.addFlashAttribute("msg", "Thêm sách thất bại");
             }
-        }
-        else {
+        } else {
             redirectAttributes.addFlashAttribute("msg", "Thêm sách thất bại");
         }
         return "redirect:/admin/book";
     }
+
     @GetMapping("book/delete/{id}")
     public String handleDeleteProductAdmin(@PathVariable("id") long productId) {
         bookSerivce.delete(productId);

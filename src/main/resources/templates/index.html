@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head th:replace="~{header :: html_header}">
 
@@ -14,20 +14,19 @@
             <h1>Welcome to Rent-a-Book</h1>
             <div class="row mt-5">
                 <div class="col-md-6">
-                    <a th:href="@{/user/book}" class="btn btn-primary btn-lg btn-square">User</a>
+                    <a th:href="@{/book}" class="btn btn-primary btn-lg btn-square">User</a>
                 </div>
                 <div class="col-md-6">
                     <a th:href="@{/admin/book}" class="btn btn-secondary btn-lg btn-square">Admin</a>
                 </div>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-3" sec:authorize="isAnonymous()">
                 <div class="col-md-12">
                     <a th:href="@{/login}" class="btn btn-dark btn-lg btn-block rounded-pill">Login</a>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 </body>
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

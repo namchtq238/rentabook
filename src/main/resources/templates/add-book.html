@@ -66,13 +66,13 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="numberOfPages">Number of Pages</label>
-                                                <input type="number" class="form-control" id="numberOfPages" name="numberOfPages" th:field="*{numberOfPage}" required>
+                                                <input type="number" class="form-control" id="numberOfPages" name="numberOfPages" th:field="*{numberOfPage}" >
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="genre">Genre</label>
-                                        <select class="form-control" id="genre" name="genre" th:field="*{genre}" required>
+                                        <select class="form-control" id="genre" name="genre" th:field="*{genre}">
                                             <option value="" disabled>Select Genre</option>
                                             <option value="Khoa học viễn tưởng">Khoa học viễn tưởng</option>
                                             <option value="Thần bí">Thần bí</option>
@@ -98,7 +98,7 @@
                             <div class="row">
                                 <div class="col-md-6 offset-5 ml-auto text-end">
                                     <div th:unless="${type.VIEW == type}">
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="button" class="btn btn-primary" id="saveBook">Save</button>
                                     </div>
                                     <div th:if="${type.VIEW == type}">
                                         <a th:href="@{'/admin/book/edit/' + ${book.id}}" >
@@ -117,6 +117,25 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có muốn lưu thay đổi?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmAddBook">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
@@ -128,6 +147,19 @@
 <!--  BEGIN PROFILE SIDEBAR  -->
 <aside th:replace="~{admin  :: admin-profile}"></aside>
 </body>
+<script>
+    // Show the confirmation modal when the "Add Book" button is clicked
+    document.getElementById("saveBook").addEventListener("click", function() {
+        $('#confirmModal').modal('show');
+    });
+
+    // Handle the confirmation action when the "Confirm" button in the modal is clicked
+    document.getElementById("confirmAddBook").addEventListener("click", function() {
+        // Submit the form to add the book
+        document.getElementById("saveBook").submit();
+    });
+</script>
+
 <script>
     function previewImage(event) {
         var preview = document.getElementById('preview');
