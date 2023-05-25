@@ -1,0 +1,1 @@
+insert into users (email, username, password, role) values ('pro@gmail.com', 'admin', '$2a$10$QbGBeIvW47RsEu6b4oE.RuyzSMVuM3iuT5JklMH5iNqIUCz4/3LFm', 0)
