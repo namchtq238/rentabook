@@ -82,9 +82,15 @@ public class AdminController {
         return "redirect:/admin/book";
     }
 
-    @GetMapping("book/delete/{id}")
-    public String handleDeleteProductAdmin(@PathVariable("id") long productId) {
-        bookSerivce.delete(productId);
+    @GetMapping("/book/delete/{id}")
+    public String handleDeleteProductAdmin(@PathVariable("id") long productId,
+                                           RedirectAttributes redirectAttributes) {
+        try {
+            bookSerivce.delete(productId);
+        }
+        catch (Exception e){
+            redirectAttributes.addFlashAttribute("msg", "delete book failed");
+        }
         return "redirect:/admin/book";
     }
 

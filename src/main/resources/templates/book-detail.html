@@ -37,7 +37,7 @@
                         <input type="hidden" id="productId" value="1">
                         <p>Thể loại: <span th:utext="*{genre}"></span></p>
                         <h5 th:utext="*{description}"></h5>
-                        <form th:action="@{'/order/' + ${book.id}}" method="post">
+                        <form id="form" th:action="@{'/order/' + ${book.id}}" method="post">
                             <div class="shop-buttons d-block d-sm-flex align-items-center">
                                 <div class="product-quantity number-input" id="quantity">
                                     <button type="button" id="sub" class="sub">-</button>
@@ -83,7 +83,7 @@
     // Handle the confirmation action when the "Confirm" button in the modal is clicked
     document.getElementById("confirm").addEventListener("click", function() {
         // Submit the form to add the book
-        document.getElementById("order").submit();
+        document.getElementById("form").submit();
     });
 </script>
 

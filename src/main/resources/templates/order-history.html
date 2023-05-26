@@ -45,10 +45,11 @@
                             <p>Số lượng: <span th:utext="${order.quantity}"></span></p>
                         </div>
                             <div class="shop-buttons d-block d-sm-flex align-items-center">
-                                <button class="main-btn ml-10" type="button">
-                                    <a th:href="@{'/order/cancel/' + ${order.id}}" >
-                                        Hủy đơn
-                                    </a>
+                                <a th:href="@{'/order/cancel/' + ${order.id}}" id="del" style="display: none">
+                                    Hủy đơn
+                                </a>
+
+                                <button class="main-btn ml-10" type="button" id="delete">
                                 </button>
                             </div>
                     </div>
@@ -65,8 +66,40 @@
         </th:block>
         
     </div>
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có muốn lưu thay đổi?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
+<script>
+    // Show the confirmation modal when the "Add Book" button is clicked
+    document.getElementById("order").addEventListener("click", function() {
+        $('#confirmModal').modal('show');
+    });
+
+    // Handle the confirmation action when the "Confirm" button in the modal is clicked
+    document.getElementById("confirm").addEventListener("click", function() {
+        // Submit the form to add the book
+        document.getElementById("form").submit();
+    });
+</script>
+
 <th:block th:insert="~{header :: script}"></th:block>
 
 </html>
