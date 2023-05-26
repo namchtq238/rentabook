@@ -105,6 +105,25 @@
         </div>
     </div>
 </div>
+<input type="text" class="d-none" th:value="${msg}" id="msg">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fa-solid fa-xmark close"></i>
+                <!--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                <h4 class="modal-title" id="myModalLabel">Thông báo</h4>
+            </div>
+            <div class="modal-body">
+                <p th:text="${msg}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--  END CONTENT PART  -->
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -141,6 +160,17 @@
             });
         });
     });
+</script>
+<script>
+    (function () {
+        const value = document.getElementById('msg')?.value;
+        if (value) {
+            setTimeout(() => {
+                $('#myModal').modal('show');
+            }, 300)
+
+        }
+    })()
 </script>
 
 <script>
