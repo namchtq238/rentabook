@@ -35,6 +35,8 @@ public class BookSerivce {
     }
 
     public boolean checkExistedBook(Book book) {
-        return (bookRepository.existsBookByAuthorAndName(book.getAuthor(), book.getName()));
+        if (book.getId() == null)
+            return bookRepository.existsBookByAuthorAndName(book.getAuthor(), book.getName());
+        return false;
     }
 }

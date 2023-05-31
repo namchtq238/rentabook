@@ -8,65 +8,62 @@
 
 <section class="breadcrum">
 
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb container">
-                <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Tài khoản</li>
-                <li class="breadcrumb-item active" aria-current="page">Lịch sử mua hàng</li>
-            </ol>
-        </nav>
-    </section>
-    <div class="container ">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb container">
+            <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Tài khoản</li>
+            <li class="breadcrumb-item active" aria-current="page">Lịch sử mua hàng</li>
+        </ol>
+    </nav>
+</section>
+<div class="container ">
 
-        <h1 class="text-center">LỊCH SỬ MUA HÀNG</h1>
-        <th:block th:if="${#lists.isEmpty(listOrder)}">
-            <div class="col-md-12  mt-50 mb-200">
-                <div class=" personal-infor ">
-                    Bạn chưa đặt bất kì một đơn hàng nào!!!
+    <h1 class="text-center">LỊCH SỬ MUA HÀNG</h1>
+    <th:block th:if="${#lists.isEmpty(listOrder)}">
+        <div class="col-md-12  mt-50 mb-200">
+            <div class=" personal-infor ">
+                Bạn chưa đặt bất kì một đơn hàng nào!!!
+            </div>
+        </div>
+    </th:block>
+    <th:block th:unless="${#lists.isEmpty(listOrder)}">
+        <div class="ordered-detail container" th:each="order, state : ${listOrder}">
+            <div class="row">
+                <div class="col-md-4">
+                    <img th:src="@{'/image/'+${order.book.cover}}" alt="">
+                </div>
+                <div class="col-md-8 ">
+                    <div class="product-name">
+                        <p>Tên sản phẩm: <span><a th:href="@{'/book/'+${order.book.id}}"
+                                                  th:utext="${order.book.name}"></a></span></p>
+                    </div>
+                    <div class="product-id">
+                        <p>Mã đơn: <span th:utext="${order.id}"></span></p>
+                    </div>
+                    <!--                        <div class="product-date">-->
+                    <!--                            <p>Ngày đặt: <span th:utext="${order.createAt}"></span></p>-->
+                    <!--                        </div>-->
+                    <div class="product-quantity">
+                        <p>Số lượng: <span th:utext="${order.quantity}"></span></p>
+                    </div>
+                    <div class="shop-buttons d-block d-sm-flex align-items-center">
+                        <a th:href="@{'/order/cancel/' + ${order.id}}" id="del" style="display: none">
+
+                        </a>
+
+                        <button class="main-btn ml-10" type="button" id="delete">
+                            Hủy đơn
+                        </button>
+                    </div>
                 </div>
             </div>
-        </th:block>
-        <th:block th:unless="${#lists.isEmpty(listOrder)}">
-            <div class="ordered-detail container" th:each="order, state : ${listOrder}">
-                    <div class="col-md-4">
-                        <img th:src="@{'/image/'+${order.book.cover}}" alt="">
-                    </div>
-                    <div class="col-md-8 ">
-                        <div class="product-name">
-                            <p>Tên sản phẩm: <span><a th:href="@{'/book/'+${order.book.id}}" th:utext="${order.book.name}"></a></span></p>
-                        </div>
-                        <div class="product-id">
-                            <p>Mã đơn: <span th:utext="${order.id}"></span></p>
-                        </div>
-<!--                        <div class="product-date">-->
-<!--                            <p>Ngày đặt: <span th:utext="${order.createAt}"></span></p>-->
-<!--                        </div>-->
-                        <div class="product-quantity">
-                            <p>Số lượng: <span th:utext="${order.quantity}"></span></p>
-                        </div>
-                            <div class="shop-buttons d-block d-sm-flex align-items-center">
-                                <a th:href="@{'/order/cancel/' + ${order.id}}" id="del" style="display: none">
-                                    Hủy đơn
-                                </a>
+        </div>
 
-                                <button class="main-btn ml-10" type="button" id="delete">
-                                </button>
-                            </div>
-                    </div>
-                </div>
-<!--                    <div class="col-sm-12 order-again">-->
-<!--                        <div><p>Tổng tiền: <span th:utext="${format.formatPrice(order.totalPrice)}"><sup>đ</sup></span></p></div>-->
-<!--                        <br>-->
-<!--                        <div>-->
-<!--                            <button type="button" class="btn btn-warning "><a th:href="@{'/user/repurchase/' + ${order.id}}">Mua lại</a></button>-->
-<!--                            <button type="button" class="btn btn-warning "><a href="#">Đánh giá</a></button>-->
-<!--                        </div>-->
-<!--                    </div>-->
+    </th:block>
 
-        </th:block>
-        
-    </div>
-<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+</div>
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -89,14 +86,14 @@
 </body>
 <script>
     // Show the confirmation modal when the "Add Book" button is clicked
-    document.getElementById("order").addEventListener("click", function() {
+    document.getElementById("delete").addEventListener("click", function () {
         $('#confirmModal').modal('show');
     });
 
     // Handle the confirmation action when the "Confirm" button in the modal is clicked
-    document.getElementById("confirm").addEventListener("click", function() {
+    document.getElementById("confirm").addEventListener("click", function () {
         // Submit the form to add the book
-        document.getElementById("form").submit();
+        document.getElementById("del").click();
     });
 </script>
 

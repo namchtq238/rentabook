@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -60,27 +61,31 @@ public class AdminController {
 
     @PostMapping("book")
     public String handleAddBook(@ModelAttribute Book book,
+                                BindingResult bindingResult,
                                 @RequestParam MultipartFile bookCover,
                                 RedirectAttributes redirectAttributes) {
-        if (!bookCover.isEmpty()) {
-            try {
-                if (bookSerivce.checkExistedBook(book)) {
-                    redirectAttributes.addFlashAttribute("msg", "Đã tồn tại sách");
-                } else {
-                    InputStream inputStream = bookCover.getInputStream();
-                    Files.copy(inputStream, path.resolve(Objects.requireNonNull(bookCover.getOriginalFilename())), StandardCopyOption.REPLACE_EXISTING);
-                    book.setCover(bookCover.getOriginalFilename());
-                    bookSerivce.createBook(book);
-                }
-            } catch (IOException e) {
-                log.error("Error reading file: {}", e.getMessage());
-                redirectAttributes.addFlashAttribute("msg", "Thêm sách thất bại");
+        if (bookCover.isEmpty() && book.getId() == null) {
+            bindingResult.rejectValue("cover", "not found", "cover is empty");
+        }
+        if (bookSerivce.checkExistedBook(book)) {
+            bindingResult.rejectValue("name","Đã tồn tại sách");
+        }
+        if (bindingResult.hasErrors()){
+            return "redirect:/book/view/" + book.getId();
+        }
+        try {
+            if (!bookCover.isEmpty() && !bookCover.getOriginalFilename().isEmpty()) {
+                InputStream inputStream = bookCover.getInputStream();
+                Files.copy(inputStream, path.resolve(Objects.requireNonNull(bookCover.getOriginalFilename())), StandardCopyOption.REPLACE_EXISTING);
+                book.setCover(bookCover.getOriginalFilename());
             }
-        } else {
+            bookSerivce.createBook(book);
+        } catch (IOException e) {
+            log.error("Error reading file: {}", e.getMessage());
             redirectAttributes.addFlashAttribute("msg", "Thêm sách thất bại");
         }
-        return "redirect:/admin/book";
-    }
+        return"redirect:/admin/book";
+}
 
     @GetMapping("/book/delete/{id}")
     public String handleDeleteProductAdmin(@PathVariable("id") long productId,
